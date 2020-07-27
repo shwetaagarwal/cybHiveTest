@@ -15,7 +15,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print('Server...')
     s.bind((HOST, PORT))
     s.listen()
-    conn, addr = s.accept()
+    s.settimeout(10) #for testing
+    try:
+        conn, addr = s.accept()
+    except socket.timeout:
+        print('caught a timeout')
+        exit(1)
+    
     with conn:
         print('Connected by', addr)
         while True:
